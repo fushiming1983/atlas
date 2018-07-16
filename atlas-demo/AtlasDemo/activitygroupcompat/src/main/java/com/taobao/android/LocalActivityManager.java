@@ -233,7 +233,12 @@ public class LocalActivityManager {
                 if (desiredState == STARTED) {
                     if (localLOGV) Log.v(TAG, r.id + ": restarting");
                     try {
-                        ActivityThread_performRestartActivity.invoke(mActivityThread, r);
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            ActivityThread_performRestartActivity.invoke(mActivityThread, r, false);
+                        } else {
+                            ActivityThread_performRestartActivity.invoke(mActivityThread, r);
+
+                        }
                     }catch (InvocationTargetException e){
                         throw new RuntimeException(e.getTargetException());
                     }
